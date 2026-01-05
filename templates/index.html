@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DCA Management Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #4D148C; /* FedEx Purple */
+        }
+
+        h2 {
+            margin-top: 30px;
+            color: #333;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 70%;
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px;
+            width: 200px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #FF6600; /* FedEx Orange */
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e65c00;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+        }
+
+        th {
+            background-color: #4D148C;
+            color: white;
+            padding: 10px;
+        }
+
+        td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .high {
+            color: red;
+            font-weight: bold;
+        }
+
+        .medium {
+            color: orange;
+            font-weight: bold;
+        }
+
+        .low {
+            color: green;
+            font-weight: bold;
+        }
+
+        a {
+            text-decoration: none;
+            color: blue;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>FedEx – DCA Management System</h1>
+
+<div class="card">
+    <h2>Add New Overdue Case (FedEx)</h2>
+
+    <form method="post">
+        Amount Due:
+        <input type="number" name="amount" required>
+
+        Days Overdue:
+        <input type="number" name="days" required>
+
+        <br><br>
+        <button type="submit">Add Case</button>
+    </form>
+</div>
+
+<h2>Cases Dashboard</h2>
+
+<table>
+    <tr>
+        <th>Case ID</th>
+        <th>Amount</th>
+        <th>Days Overdue</th>
+        <th>Priority (AI)</th>
+        <th>Status</th>
+        <th>DCA Action</th>
+    </tr>
+
+    {% for case in cases %}
+    <tr>
+        <td>{{ case.id }}</td>
+        <td>{{ case.amount }}</td>
+        <td>{{ case.days }}</td>
+
+        <td class="{% if case.priority == 'HIGH' %}high
+                   {% elif case.priority == 'MEDIUM' %}medium
+                   {% else %}low{% endif %}">
+            {{ case.priority }}
+        </td>
+
+        <td>{{ case.status }}</td>
+
+        <td>
+            {% if case.status == "Pending" %}
+            <a href="/update/{{ case.id }}">Mark Recovered</a>
+            {% else %}
+            Completed
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
